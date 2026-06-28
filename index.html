@@ -36,34 +36,43 @@
     );
   }
 
-  /* ── Muziekknop Styling (Iets kleiner & met Play-icoon) ── */
+/* ── Muziekknop Styling (Nu geforceerd grijs, zonder oranje mobiele gloed) ── */
   #muteBtn {
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 100;
-    width: 42px;  /* Kleiner gemaakt (was 50px) */
-    height: 42px; /* Kleiner gemaakt (was 50px) */
+    width: 42px;  
+    height: 42px; 
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    /* Grijze glassmorphism look */
+    background: rgba(150, 150, 150, 0.2);
+    border: 1px solid rgba(150, 150, 150, 0.4);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px; /* Iets kleiner gezet voor betere verhouding */
+    font-size: 16px; 
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    padding-left: 2px; /* Zorgt dat het Play-driehoekje optisch perfect in het midden staat */
+    padding-left: 2px; 
+    
+    /* Schakelt de standaard oranje/blauwe gloed uit wanneer je op mobiel tikt */
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    color: #888888; /* Mocht het icoon als tekst worden gezien, dan is deze nu grijs */
+    
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
   }
-  #muteBtn:hover {
-    background: rgba(255, 255, 255, 0.25);
+
+  /* Effect bij overgang en tikken */
+  #muteBtn:hover, #muteBtn:active {
+    background: rgba(150, 150, 150, 0.35);
+    border-color: rgba(150, 150, 150, 0.6);
     transform: scale(1.05);
-  }
-  #muteBtn:active {
-    transform: scale(0.95);
   }
 
   /* ── Hearts ── */
