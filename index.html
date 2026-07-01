@@ -12,6 +12,7 @@
     font-family: 'Georgia', serif;
     background: #111;
     user-select: none;
+     overscroll-behavior: none;
   }
 
 #bg {
@@ -21,7 +22,7 @@
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  transition: transform 0.15s ease-out;
+will-change: transform;
   will-change: transform;
   transform: translate3d(0,0,0) scale(1.06);
 }
@@ -160,33 +161,18 @@
 <script>
 window.addEventListener("DOMContentLoaded", () => {
   const intro = document.getElementById("intro");
-  const audio = document.getElementById("audio");
 
   if (!intro) return;
 
-  // start muziek zo vroeg mogelijk
-  if (audio) {
-    audio.volume = 0;
-    audio.play().then(() => {
-      // fade muziek in
-      let v = 0;
-      const fade = setInterval(() => {
-        v += 0.05;
-        audio.volume = Math.min(v, 1);
-        if (v >= 1) clearInterval(fade);
-      }, 100);
-    }).catch(() => {});
-  }
+  intro.style.opacity = "1";
 
-  // fade out intro
   setTimeout(() => {
     intro.style.opacity = "0";
   }, 2500);
 
-  // verwijder pas NA fade
   setTimeout(() => {
     intro.remove();
-  }, 4800);
+  }, 4200);
 });
  
   const START = new Date('2026-06-06T00:00:00');
@@ -414,7 +400,7 @@ document.addEventListener('pointerdown',()=>{if(audio.src&&audio.paused)audio.pl
   for (let i = 0; i < amount; i++) spawnHeart();
 }
 
-document.addEventListener("pointerup", () => {
+document.addEventListener("pointerdown", (e) => {
   burstHearts(5);
 }, { passive: true });
 
