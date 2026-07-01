@@ -387,14 +387,14 @@ document.addEventListener('pointerdown',()=>{if(audio.src&&audio.paused)audio.pl
     a.click();
   }
 
-  // Eerste aanraking op het scherm past de tekst ook direct aan naar PAUSE
-  document.addEventListener('pointerdown', () => {
-    if (audio.src && audio.paused) {
-      audio.play().then(() => {
-        document.getElementById('muteBtn').textContent = 'PAUSE';
-      }).catch(() => {});
-    }
-  }, { once: true });
+document.addEventListener('pointerdown', () => {
+  const audio = document.getElementById('audio');
+  if (audio && audio.paused) {
+    audio.play().then(() => {
+      document.getElementById('muteBtn').textContent = 'PAUSE';
+    }).catch(() => {});
+  }
+}, { once: true });
 
  function burstHearts(amount = 4) {
   for (let i = 0; i < amount; i++) spawnHeart();
@@ -435,6 +435,22 @@ window.addEventListener("deviceorientation", (e) => {
   targetX = e.gamma / 3;
   targetY = e.beta / 3;
 });
+
+function toggleMute() {
+  const audio = document.getElementById('audio');
+  const btn = document.getElementById('muteBtn');
+
+  if (!audio) return;
+
+  if (audio.paused) {
+    audio.play().then(() => {
+      btn.textContent = 'PAUSE';
+    }).catch(() => {});
+  } else {
+    audio.pause();
+    btn.textContent = 'PLAY';
+  }
+}
  
 </script>
 </body>
