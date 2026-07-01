@@ -290,20 +290,16 @@ body{width:100vw;height:100vh;overflow:hidden;font-family:Georgia,serif;backgrou
 
 /* ── CINEMATIC INTRO ── */
 #intro {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 999;
-  color: white;
-  transition: opacity 1.8s ease;
-    opacity: 1;
-      pointer-events: none;
- 
+  position: fixed; inset: 0; background:#000;
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column; z-index:999; color:#fff;
+  transition: opacity 1.8s ease; opacity:1; pointer-events:none;
 }
+#intro h1 {
+  font-size:28px; letter-spacing:6px; opacity:0;
+  animation: fadeInTitle 2.5s ease forwards 1s;
+}
+@keyframes fadeInTitle { to { opacity:1; transform:scale(1.05); } }
 
 #intro h1 {
   font-size: 28px;
@@ -352,9 +348,7 @@ body{width:100vw;height:100vh;overflow:hidden;font-family:Georgia,serif;backgrou
 
 </head><body>
 
-<div id="intro">
-  <h1>06.06.2026</h1>
-</div>
+<div id="intro"><h1>06.06.2026</h1></div>
 
 <div id="miniHeart">❤️</div>
 <div id="bg"></div><div id="hearts"></div>
