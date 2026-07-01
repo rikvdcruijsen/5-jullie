@@ -275,7 +275,88 @@ body{width:100vw;height:100vh;overflow:hidden;font-family:Georgia,serif;backgrou
 .unit-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:3px}
 #muteBtn {position:fixed;top:20px;right:20px;z-index:100;padding:8px 16px;border-radius:20px;background:rgba(150,150,150,0.15);border:1px solid rgba(150,150,150,0.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:#aaaaaa;font-family:Georgia,serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,0.2);-webkit-tap-highlight-color:transparent;outline:none;transition:transform 0.2s ease,background 0.2s ease,border-color 0.2s ease,color 0.2s ease;}
 #muteBtn:hover,#muteBtn:active{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.5);color:#fff;transform:scale(1.03)}
-</style></head><body>
+
+
+/* ── CINEMATIC INTRO ── */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 999;
+  color: white;
+  transition: opacity 1.8s ease;
+}
+
+#intro h1 {
+  font-size: 28px;
+  letter-spacing: 6px;
+  opacity: 0;
+  animation: fadeInTitle 2.5s ease forwards 1s;
+}
+
+@keyframes fadeInTitle {
+  to { opacity: 1; transform: scale(1.05); }
+}
+
+/* ── HEART ABOVE COUNTER ── */
+#miniHeart {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+  animation: pulseHeart 1.4s infinite ease-in-out;
+  opacity: 0.8;
+}
+
+@keyframes pulseHeart {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+
+/* ── GLOW COUNTER ── */
+#counter {
+  text-shadow: 0 0 18px rgba(255,255,255,0.08);
+  animation: glowBreath 6s infinite ease-in-out;
+}
+
+@keyframes glowBreath {
+  0%,100% { filter: drop-shadow(0 0 0px rgba(255,255,255,0)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,255,255,0.25)); }
+}
+
+/* ── PLAY BUTTON BREATHING ── */
+@keyframes breathe {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+function toggleMute() {
+  const audio = document.getElementById('audio');
+  const muteBtn = document.getElementById('muteBtn');
+
+  if (audio.paused) {
+    audio.play().catch(() => {});
+    muteBtn.textContent = 'PAUSE';
+    muteBtn.classList.add("active");
+  } else {
+    audio.pause();
+    muteBtn.textContent = 'PLAY';
+    muteBtn.classList.remove("active");
+  }
+}
+</style>
+
+
+</head><body>
+
+<div id="intro">
+  <h1>06.06.2026</h1>
+</div>
+
+<div id="miniHeart">❤️</div>
 <div id="bg"></div><div id="hearts"></div>
 <button id="muteBtn" onclick="toggleMute()">PLAY</button>
 <div id="counter">
@@ -314,6 +395,37 @@ document.addEventListener('pointerdown',()=>{if(audio.src&&audio.paused)audio.pl
       }).catch(() => {});
     }
   }, { once: true });
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const intro = document.getElementById("intro");
+    intro.style.opacity = "0";
+    setTimeout(() => intro.remove(), 2000);
+  }, 2500);
+});
+
+ function burstHearts(amount = 4) {
+  for (let i = 0; i < amount; i++) spawnHeart();
+}
+
+document.addEventListener("pointerdown", () => {
+  burstHearts(5);
+});
+
+ const bg = document.getElementById("bg");
+
+document.addEventListener("mousemove", (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 10;
+  const y = (e.clientY / window.innerHeight - 0.5) * 10;
+  bg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
+});
+
+window.addEventListener("deviceorientation", (e) => {
+  const x = (e.gamma || 0) / 3;
+  const y = (e.beta || 0) / 3;
+  bg.style.transform = `scale(1.08) translate(${x}px, ${y}px)`;
+});
+ 
 </script>
 </body>
 </html>
