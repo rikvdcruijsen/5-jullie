@@ -12,63 +12,51 @@
     font-family: 'Georgia', serif;
     background: #111;
     user-select: none;
-     overscroll-behavior: none;
+    overscroll-behavior: none;
   }
 
-#bg {
-  position: fixed;
-  inset: 0;
-  background-image: url('Ontwerp zonder titel (3).png');
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-will-change: transform;
-  will-change: transform;
-  transform: translate3d(0,0,0) scale(1.06);
-}
+  #bg {
+    position: fixed;
+    inset: 0;
+    background-image: url('Ontwerp zonder titel (3).png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    will-change: transform;
+    transform: translate3d(0,0,0) scale(1.06);
+  }
 
-  /* ── Muziekknop Styling (Strak grijs, langwerpig voor tekst) ── */
+  /* ── Muziekknop Styling ── */
   #muteBtn {
     position: fixed;
     top: 20px;
     right: 20px;
     z-index: 100;
-    
-    /* Vorm aangepast naar een capsule/pill vorm voor tekst */
     padding: 8px 16px;
     border-radius: 20px;
-    
-    /* Grijze glassmorphism look */
     background: rgba(150, 150, 150, 0.15);
     border: 1px solid rgba(150, 150, 150, 0.35);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Tekst styling in strak grijs */
-    color: #aaaaaa; 
+    color: #aaaaaa;
     font-family: 'Georgia', serif;
     font-size: 11px;
     font-weight: bold;
     letter-spacing: 2px;
     text-transform: uppercase;
-    
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    
-    /* Voorkomt de oranje gloed op mobiele telefoons */
     -webkit-tap-highlight-color: transparent;
     outline: none;
-    
     transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
   }
   #muteBtn:hover, #muteBtn:active {
     background: rgba(150, 150, 150, 0.3);
     border-color: rgba(150, 150, 150, 0.5);
-    color: #ffffff; /* Tekst licht wit op bij aanraken */
+    color: #ffffff;
     transform: scale(1.03);
   }
 
@@ -113,55 +101,37 @@ will-change: transform;
     color:rgba(255,255,255,.5); margin-top:3px;
   }
 
-  /* ── Setup bar ── */
-  #setup {
-    position:fixed; bottom:20px; left:0; right:0;
-    display:flex; justify-content:center; gap:12px; z-index:20;
+  /* ── Cinematic intro ── */
+  #intro {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 999;
+    color: #fff;
+    transition: opacity 1.8s ease;
+    opacity: 1;
+    pointer-events: none;
   }
-
-  .file-btn {
-    padding:9px 18px; border-radius:22px;
-    background:rgba(255,255,255,.15);
-    border:1px solid rgba(255,255,255,.3);
-    color:#fff; font-size:12px; cursor:pointer;
-    backdrop-filter:blur(12px);
-    transition: background .2s;
-    display:flex; align-items:center; gap:6px;
+  #intro h1 {
+    font-size: 28px;
+    letter-spacing: 6px;
+    opacity: 0;
+    animation: fadeInTitle 2.5s ease forwards 1s;
   }
-  .file-btn:hover { background:rgba(255,255,255,.28); }
-  .file-btn.done { background:rgba(255,150,180,.3); border-color:rgba(255,150,180,.5); }
-
-#intro {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 999;
-  color: #fff;
-  transition: opacity 1.8s ease;
-  opacity: 1;
-  pointer-events: none;
-}
-#intro h1 {
-  font-size: 28px;
-  letter-spacing: 6px;
-  opacity: 0;
-  animation: fadeInTitle 2.5s ease forwards 1s;
-}
-@keyframes fadeInTitle {
-  to { opacity: 1; transform: scale(1.05); }
-}
-}
+  @keyframes fadeInTitle {
+    to { opacity: 1; transform: scale(1.05); }
+  }
 </style>
 </head>
 <body>
+
 <div id="intro"><h1>06.06.2026</h1></div>
- 
+
 <div id="bg"></div>
-<div id="gradient"></div>
 <div id="hearts"></div>
 
 <button id="muteBtn" onclick="toggleMute()">PLAY</button>
@@ -178,40 +148,33 @@ will-change: transform;
 
 <audio id="audio" src="Michael Bublé - Everything [Official Music Video].mp3" loop></audio>
 
-
 <script>
-
-function toggleMute() {
   const audio = document.getElementById('audio');
-  const muteBtn = document.getElementById('muteBtn');
-  if (audio.paused) {
-    audio.play().then(() => muteBtn.textContent = 'PAUSE').catch(() => {});
-  } else {
-    audio.pause();
-    muteBtn.textContent = 'PLAY';
+  const bg = document.getElementById('bg');
+
+  // ── Mute/play toggle ──
+  function toggleMute() {
+    const muteBtn = document.getElementById('muteBtn');
+    if (audio.paused) {
+      audio.play().then(() => muteBtn.textContent = 'PAUSE').catch(() => {});
+    } else {
+      audio.pause();
+      muteBtn.textContent = 'PLAY';
+    }
   }
-}
- 
-window.addEventListener("DOMContentLoaded", () => {
-  const intro = document.getElementById("intro");
 
-  if (!intro) return;
+  // ── Intro fade ──
+  window.addEventListener("DOMContentLoaded", () => {
+    const intro = document.getElementById("intro");
+    if (!intro) return;
 
-  intro.style.opacity = "1";
+    setTimeout(() => { intro.style.opacity = "0"; }, 2500);
+    setTimeout(() => { intro.remove(); }, 4200);
+  });
 
-  setTimeout(() => {
-    intro.style.opacity = "0";
-  }, 2500);
-
-  setTimeout(() => {
-    intro.remove();
-  }, 4200);
-});
- 
+  // ── Countdown ──
   const START = new Date('2026-06-06T00:00:00');
-  const EMOJIS = ['❤️','🩷','💕','💗','💖','🤍','💓'];
 
-  // ── Counter ──
   function tick() {
     const diff = Date.now() - START.getTime();
     const abs  = Math.abs(diff);
@@ -228,7 +191,9 @@ window.addEventListener("DOMContentLoaded", () => {
   setInterval(tick, 1000);
   tick();
 
-  // ── Hearts ──
+  // ── Floating hearts ──
+  const EMOJIS = ['❤️','🩷','💕','💗','💖','🤍','💓'];
+
   function spawnHeart() {
     const el = document.createElement('div');
     el.className = 'heart';
@@ -247,226 +212,44 @@ window.addEventListener("DOMContentLoaded", () => {
   setInterval(spawnHeart, 3000);
   for (let i = 0; i < 5; i++) spawnHeart(); // burst on load
 
-  // ── Image Setup ──
-  let imgBase64 = null, imgMime = null;
-
-  function setImage(inp) {
-    if (!inp.files[0]) return;
-    const file = inp.files[0];
-    imgMime = file.type;
-    const reader = new FileReader();
-    reader.onload = e => {
-      imgBase64 = e.target.result;
-      document.getElementById('bg').style.backgroundImage = `url(${imgBase64})`;
-      document.getElementById('imgLabel').classList.add('done');
-      document.getElementById('imgLabel').textContent = '✅ Photo set';
-      checkDownloadBtn();
-    };
-    reader.readAsDataURL(file);
+  function burstHearts(amount = 4) {
+    for (let i = 0; i < amount; i++) spawnHeart();
   }
 
-  // ── Audio Setup ──
-  const audio = document.getElementById('audio');
-  let muted = false, audioBase64 = null, audioMime = null;
-
-  function setSong(inp) {
-    if (!inp.files[0]) return;
-    const file = inp.files[0];
-    audioMime = file.type;
-    const reader = new FileReader();
-    reader.onload = e => {
-      audioBase64 = e.target.result;
-      audio.src = audioBase64;
+  // ── First-touch: start audio + burst hearts ──
+  document.addEventListener('pointerdown', () => {
+    if (audio.src && audio.paused) {
       audio.play().then(() => {
         document.getElementById('muteBtn').textContent = 'PAUSE';
       }).catch(() => {});
-      document.getElementById('songLabel').classList.add('done');
-      document.getElementById('songLabel').textContent = '✅ Song set';
-      checkDownloadBtn();
-    };
-    reader.readAsDataURL(file);
+    }
+  }, { once: true });
+
+  document.addEventListener('pointerdown', () => {
+    burstHearts(5);
+  }, { passive: true });
+
+  // ── Parallax background ──
+  let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+
+  function animateBG() {
+    currentX += (targetX - currentX) * 0.08;
+    currentY += (targetY - currentY) * 0.08;
+    bg.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1.06)`;
+    requestAnimationFrame(animateBG);
   }
+  animateBG();
 
-  function checkDownloadBtn() {
-    if (imgBase64 || audioBase64)
-      document.getElementById('dlBtn').style.display = 'flex';
-  }
+  document.addEventListener("mousemove", (e) => {
+    targetX = (e.clientX / window.innerWidth - 0.5) * 10;
+    targetY = (e.clientY / window.innerHeight - 0.5) * 10;
+  });
 
-  // ── Download de uiteindelijke NFC-pagina ──
-  function downloadPage() {
-    const bgStyle = imgBase64 ? `background-image:url('${imgBase64}');` : `background-image:url('Ontwerp zonder titel (3).png');`;
-    const audioTag = audioBase64
-      ? `<audio id="audio" src="${audioBase64}" loop autoplay></audio>`
-      : `<audio id="audio" src="Michael Bublé - Everything [Official Music Video].mp3" loop></audio>`;
-
-    const html = `<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>06.06.2026</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{width:100vw;height:100vh;overflow:hidden;font-family:Georgia,serif;background:#111;user-select:none}
-#bg{position:fixed;inset:0;background-size:cover;background-position:center top;${bgStyle}}
-#hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
-.heart{position:absolute;bottom:-60px;animation:floatUp linear forwards;opacity:0}
-@keyframes floatUp{0%{transform:translateY(0) scale(.6) rotate(-10deg);opacity:0}8%{opacity:1}50%{transform:translateY(-50vh) scale(1) rotate(8deg)}90%{opacity:.7}100%{transform:translateY(-115vh) scale(1.1) rotate(-5deg);opacity:0}}
-#counter{position:fixed;bottom:50px;left:0;right:0;text-align:center;color:#fff;z-index:10;padding:0 20px}
-#counter-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:10px}
-.units{display:flex;justify-content:center;gap:18px}
-.unit{text-align:center}
-.unit-num{font-size:38px;font-weight:700;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.6)}
-.unit-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:3px}
-#muteBtn {position:fixed;top:20px;right:20px;z-index:100;padding:8px 16px;border-radius:20px;background:rgba(150,150,150,0.15);border:1px solid rgba(150,150,150,0.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:#aaaaaa;font-family:Georgia,serif;font-size:11px;font-weight:bold;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 4px 15px rgba(0,0,0,0.2);-webkit-tap-highlight-color:transparent;outline:none;transition:transform 0.2s ease,background 0.2s ease,border-color 0.2s ease,color 0.2s ease;}
-#muteBtn:hover,#muteBtn:active{background:rgba(150,150,150,0.3);border-color:rgba(150,150,150,0.5);color:#fff;transform:scale(1.03)}
-
-
-#intro {
-  position: fixed; inset: 0; background:#000;
-  display:flex; align-items:center; justify-content:center;
-  flex-direction:column; z-index:999; color:#fff;
-  transition: opacity 1.8s ease; opacity:1; pointer-events:none;
-}
-#intro h1 {
-  font-size:28px; letter-spacing:6px; opacity:0;
-  animation: fadeInTitle 2.5s ease forwards 1s;
-}
-@keyframes fadeInTitle { to { opacity:1; transform:scale(1.05); } }
-
-/* ── HEART ABOVE COUNTER ── */
-#miniHeart {
-  text-align: center;
-  font-size: 14px;
-  margin-bottom: 8px;
-  animation: pulseHeart 1.4s infinite ease-in-out;
-  opacity: 0.8;
-}
-
-@keyframes pulseHeart {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-}
-
-/* ── GLOW COUNTER ── */
-#counter {
-  text-shadow: 0 0 18px rgba(255,255,255,0.08);
-  animation: glowBreath 6s infinite ease-in-out;
-}
-
-@keyframes glowBreath {
-  0%,100% { filter: drop-shadow(0 0 0px rgba(255,255,255,0)); }
-  50% { filter: drop-shadow(0 0 12px rgba(255,255,255,0.25)); }
-}
-
-/* ── PLAY BUTTON BREATHING ── */
-@keyframes breathe {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
-}
-
-</style>
-
-
-</head><body>
-
-<div id="intro"><h1>06.06.2026</h1></div>
-
-<div id="miniHeart">❤️</div>
-<div id="bg"></div><div id="hearts"></div>
-<button id="muteBtn" onclick="toggleMute()">PLAY</button>
-<div id="counter">
-  <div id="counter-label">❤️ Together for</div>
-  <div class="units">
-    <div class="unit"><div class="unit-num" id="d">0</div><div class="unit-lbl">days</div></div>
-    <div class="unit"><div class="unit-num" id="h">0</div><div class="unit-lbl">hours</div></div>
-    <div class="unit"><div class="unit-num" id="m">0</div><div class="unit-lbl">minutes</div></div>
-    <div class="unit"><div class="unit-num" id="s">0</div><div class="unit-lbl">seconds</div></div>
-  </div>
-</div>
-${audioTag}
-<script>
-const START=new Date('2026-06-06T00:00:00');
-const EMOJIS=['❤️','🩷','💕','💗','💖','🤍','💓'];
-function tick(){const diff=Date.now()-START.getTime();const abs=Math.abs(diff);const sign=diff<0;document.getElementById('counter-label').textContent=sign?'✨ Starting in':'❤️ Together for';document.getElementById('d').textContent=Math.floor(abs/86400000);document.getElementById('h').textContent=Math.floor((abs%86400000)/3600000);document.getElementById('m').textContent=Math.floor((abs%3600000)/60000);document.getElementById('s').textContent=Math.floor((abs%60000)/1000);}
-setInterval(tick,1000);tick();
-function spawnHeart(){const el=document.createElement('div');el.className='heart';el.textContent=EMOJIS[Math.random()*EMOJIS.length|0];const size=14+Math.random()*22;const dur=5+Math.random()*7;el.style.cssText='left:'+Math.random()*100+'vw;font-size:'+size+'px;animation-duration:'+dur+'s;animation-delay:'+Math.random()*1.5+'s;';document.getElementById('hearts').appendChild(el);setTimeout(()=>el.remove(),(dur+2)*1000);}
-setInterval(spawnHeart,700);for(let i=0;i<5;i++)spawnHeart();
-function toggleMute(){const audio=document.getElementById('audio');const muteBtn=document.getElementById('muteBtn');if(audio.paused){audio.play().catch(()=>{});muteBtn.textContent='PAUSE';}else{audio.pause();muteBtn.textContent='PLAY';}}
-document.addEventListener('pointerdown',()=>{if(audio.src&&audio.paused)audio.play().then(()=>{document.getElementById('muteBtn').textContent='PAUSE';}).catch(()=>{});},{once:true});
-<\/script></body></html>`;
-
-    const blob = new Blob([html], { type: 'text/html' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = '06-06-2026.html';
-    a.click();
-  }
-
-document.addEventListener('pointerdown', () => {
-  const audio = document.getElementById('audio');
-  if (audio && audio.paused) {
-    audio.play().then(() => {
-      document.getElementById('muteBtn').textContent = 'PAUSE';
-    }).catch(() => {});
-  }
-}, { once: true });
-
- function burstHearts(amount = 4) {
-  for (let i = 0; i < amount; i++) spawnHeart();
-}
-
-document.addEventListener("pointerdown", (e) => {
-  burstHearts(5);
-}, { passive: true });
-
-const bg = document.getElementById("bg");
-
-let targetX = 0;
-let targetY = 0;
-let currentX = 0;
-let currentY = 0;
-
-function animateBG() {
-  currentX += (targetX - currentX) * 0.08;
-  currentY += (targetY - currentY) * 0.08;
-
-  bg.style.transform =
-    `translate3d(${currentX}px, ${currentY}px, 0) scale(1.06)`;
-
-  requestAnimationFrame(animateBG);
-}
-
-animateBG();
-
-// desktop movement
-document.addEventListener("mousemove", (e) => {
-  targetX = (e.clientX / window.innerWidth - 0.5) * 10;
-  targetY = (e.clientY / window.innerHeight - 0.5) * 10;
-});
-
-// mobile tilt
-window.addEventListener("deviceorientation", (e) => {
-  if (!e.gamma || !e.beta) return;
-  targetX = e.gamma / 3;
-  targetY = e.beta / 3;
-});
-
-function toggleMute() {
-  const audio = document.getElementById('audio');
-  const btn = document.getElementById('muteBtn');
-
-  if (!audio) return;
-
-  if (audio.paused) {
-    audio.play().then(() => {
-      btn.textContent = 'PAUSE';
-    }).catch(() => {});
-  } else {
-    audio.pause();
-    btn.textContent = 'PLAY';
-  }
-}
- 
+  window.addEventListener("deviceorientation", (e) => {
+    if (!e.gamma || !e.beta) return;
+    targetX = e.gamma / 3;
+    targetY = e.beta / 3;
+  });
 </script>
 </body>
 </html>
